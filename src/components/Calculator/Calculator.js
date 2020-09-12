@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { Button } from '../Button'
 // state = {
 //     amount: 0,
 //     currencyFrom: 'PLN',
@@ -8,23 +8,45 @@ import React, { useState } from 'react';
 // this.setState({ currencyFrom: event.target.value}, () => {
 //aktualny stan aplikacji
 //})
-function Select( {value, setCurrency}) {
+function Select({ value, setCurrency }) {
+    const [currencies, setCurrencies] = useState([]); // 'AUD', 'BGN', itd...
+
+    useEffect(() => {
+        fetch(`https://api.ratesapi.io/api/latest?base=PLN`)
+            .then(response => response.json())
+            .then(data => {
+                setCurrencies(Object.keys(data.rates))
+            });
+        return () => {
+
+        }
+    }, []);
+
     return (
         <select value={value} onChange={(event) => setCurrency(event.target.value)}>
-            <option value='USD'>USD</option>
-            <option value='PLN'>PLN</option>
-            <option value='GBP'>GBP</option>
-            <option value='EUR'>EUR</option>
+            {currencies.map((elem) =>
+                <option key={`curr-${elem}`} value={elem}>{elem}</option>
+            )};
         </select>
     );
 }
 
 function Calculator() {
+    const [result, setResult] = useState(0);
     const [amount, setAmount] = useState(0);
     const [currencyFrom, setCurrencyFrom] = useState('PLN');
     const [currencyTo, setCurrencyTo] = useState('USD');
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        fetch(`https://api.ratesapi.io/api/latest?base=${currencyFrom}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setResult(amount * data.rates[currencyTo]);
+            });
+    }
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div>
                 <input type='number' placeholder='Amount' onChange={
                     (event) => {
@@ -34,14 +56,15 @@ function Calculator() {
             </div>
             <div>
                 <span>From: </span>
-                    <Select value={currencyFrom} setCurrency={setCurrencyFrom}/>
+                <Select value={currencyFrom} setCurrency={setCurrencyFrom} />
             </div>
             <div>
                 <span>To: </span>
-                <Select value={currencyTo} setCurrency={setCurrencyTo}/>
+                <Select value={currencyTo} setCurrency={setCurrencyTo} />
             </div>
             <div>
-                Result: {amount}
+                Result: {result}
+                <Button type='Submit'>Send</Button>
             </div>
         </form>
     );

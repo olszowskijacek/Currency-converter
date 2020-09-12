@@ -11,7 +11,6 @@ function App() {
     <div className="App">
       <p>Hello!!</p>
       <p>{day}</p>
-    
     <Calculator/>
     </div>
   );
@@ -20,7 +19,7 @@ function App() {
 // details: "https://exchangeratesapi.io"
 // }
 
-{/* 
+{/*
       <App>
         <Header>
           <Menu></Menu>
