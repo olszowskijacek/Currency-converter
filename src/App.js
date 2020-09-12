@@ -1,26 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Button } from './components/Button';
+import {Calculator} from './components/Calculator';
+const day = 'Saturday'
+
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <p>Hello!!</p>
+      <p>{day}</p>
+    
+    <Calculator/>
     </div>
   );
 }
+// {
+// details: "https://exchangeratesapi.io"
+// }
+
+{/* 
+      <App>
+        <Header>
+          <Menu></Menu>
+        </Header>
+        <Main>
+          <div></div>
+          <div></div>
+          <div></div>
+        </Main>
+        <Footer></Footer>
+      </App> */}
+
 
 export default App;
